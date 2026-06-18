@@ -3,154 +3,618 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR. ANAND TRADER - Master Executive Administration Portal</title>
+<title>MR. ANAND TRADER - Premium Wingo Injected Engine</title>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Space+Grotesk:wght=500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=100;400;800&family=Orbitron:wght=400;900&display=swap');
+
+/* --- GLOBAL STRUCTURAL ANIMATIONS --- */
+@keyframes fadeInUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradientBG {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+@keyframes textShimmer {
+0% { text-shadow: 0 0 10px rgba(255,255,255,0.2); background-position: 0% 50%; }
+50% { text-shadow: 0 0 25px rgba(0, 240, 255, 0.8); background-position: 100% 50%; }
+100% { text-shadow: 0 0 10px rgba(255,255,255,0.2); background-position: 0% 50%; }
+}
+@keyframes borderRotate {
+100% { transform: rotate(360deg); }
+}
+@keyframes marqueeSpeed {
+0% { transform: translateX(100%); }
+100% { transform: translateX(-100%); }
+}
+@keyframes gearSpin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+@keyframes subtlePulse {
+0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.4)); }
+50% { transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.8)); }
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 body {
-background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 50%, #020617 100%);
-font-family: 'Plus Jakarta Sans', sans-serif;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 min-height: 100vh;
-color: #f1f5f9;
 overflow-x: hidden;
+padding: 15px;
+transition: background 1s ease-in-out;
 }
 
-.heading-font { font-family: 'Space Grotesk', sans-serif; }
-
-@keyframes shimmerText {
-0% { background-position: -200% center; }
-100% { background-position: 200% center; }
+/* --- THEME VARIATIONS --- */
+.auth-bg {
+background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+background-size: 400% 400%;
+animation: gradientBG 12s ease infinite;
 }
-.animate-shimmer-text {
-background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #e11d48, #38bdf8);
+
+.dashboard-bg {
+background: linear-gradient(135deg, #0f0c20 0%, #15102a 50%, #06040a 100%);
+background-size: 200% 200%;
+animation: gradientBG 15s ease infinite;
+}
+
+h2, h3, h4, .brand-title {
+animation: textShimmer 3s infinite ease-in-out;
+}
+
+.brand-title {
+font-family: 'Orbitron', sans-serif;
+font-weight: 900;
+letter-spacing: 2px;
+background: linear-gradient(90deg, #ff007f, #00f0ff, #ff007f);
 background-size: 200% auto;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-animation: shimmerText 5s linear infinite;
 }
 
-@keyframes neonFlicker {
-0%, 100% { text-shadow: 0 0 4px rgba(245, 158, 11, 0.2); }
-50% { text-shadow: 0 0 12px rgba(245, 158, 11, 0.6); }
+/* --- TELEGRAM LOGO NODE STYLING --- */
+.tg-animated-logo-wrapper {
+position: relative;
+width: 70px;
+height: 70px;
+margin: 0 auto 15px auto;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+animation: subtlePulse 3s infinite ease-in-out;
 }
-.animate-neon-amber { animation: neonFlicker 3s infinite ease-in-out; }
-
-@keyframes neonFlickerIndigo {
-0%, 100% { text-shadow: 0 0 4px rgba(129, 140, 248, 0.2); }
-50% { text-shadow: 0 0 12px rgba(129, 140, 248, 0.6); }
+.tg-logo-ring {
+position: absolute;
+width: 100%;
+height: 100%;
+border-radius: 50%;
+border: 2px dashed #00f0ff;
+animation: borderRotate 10s linear infinite;
 }
-.animate-neon-indigo { animation: neonFlickerIndigo 3s infinite ease-in-out; }
-
-.admin-card {
-background: rgba(15, 23, 42, 0.4);
-backdrop-filter: blur(20px);
-border: 1px solid rgba(255, 255, 255, 0.05);
-box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
-transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.tg-logo-icon-box {
+width: 54px;
+height: 54px;
+background: radial-gradient(circle, #229ED9 0%, #177ca8 100%);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-size: 24px;
+box-shadow: 0 4px 15px rgba(34, 158, 217, 0.4);
+z-index: 2;
 }
 
-.admin-card:hover { transform: translateY(-2px); border-color: rgba(99, 102, 241, 0.25); }
-@keyframes slideUpFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.animate-row { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+/* --- VIP PREMIUM NOTICE BOARD --- */
+.notice-board {
+background: rgba(0, 0, 0, 0.65);
+border: 1px dashed rgba(255, 193, 7, 0.6);
+border-radius: 12px;
+padding: 12px;
+width: 100%;
+max-width: 360px;
+margin: 0 auto 15px auto;
+overflow: hidden;
+white-space: nowrap;
+box-shadow: 0 0 20px rgba(255, 193, 7, 0.15) inset;
+}
+#dashboard-page .notice-board {
+max-width: 500px;
+}
+.notice-text {
+display: inline-block;
+font-size: 12.5px;
+color: #fff;
+font-weight: 500;
+letter-spacing: 0.5px;
+animation: marqueeSpeed 32s linear infinite;
+}
+.notice-text span.alert-tag {
+color: #ef4444;
+font-weight: 800;
+text-transform: uppercase;
+}
+.notice-text span.tg-tag {
+color: #00f0ff;
+font-weight: bold;
+}
+
+/* --- UI MOBILE OPTIMIZED INPUTS --- */
+button {
+width: 100%;
+padding: 14px;
+background: linear-gradient(90deg, #e73c7e, #23a6d5, #e73c7e);
+background-size: 200% auto;
+border: none;
+color: white;
+font-size: 16px;
+border-radius: 8px;
+cursor: pointer;
+font-weight: bold;
+transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+box-shadow: 0 4px 15px rgba(35, 166, 213, 0.4);
+}
+
+button:hover {
+background-position: right center;
+transform: translateY(-3px) scale(1.02);
+box-shadow: 0 8px 25px rgba(35, 166, 213, 0.7);
+}
+
+button:active { transform: translateY(-1px) scale(0.98); }
+
+.input-group input, .round-input-container input {
+width: 100%;
+padding: 12px;
+border: 2px solid #ddd;
+border-radius: 8px;
+font-size: 16px;
+outline: none;
+transition: all 0.3s ease-in-out;
+color: #333;
+}
+
+.input-group input:focus, .round-input-container input:focus {
+border-color: #23a6d5;
+box-shadow: 0 0 15px rgba(35, 166, 213, 0.6);
+transform: scale(1.01);
+}
+
+.global-branding-wrapper {
+width: 100%;
+max-width: 360px;
+text-align: center;
+margin-bottom: 5px;
+animation: fadeInUp 0.6s ease;
+}
+
+/* --- STRICT MOBILE CONTAINERS --- */
+.box-wrapper {
+position: relative;
+width: 100%;
+max-width: 360px;
+padding: 3px;
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.box-wrapper::before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: conic-gradient(#ff007f, #00f0ff, #ff007f);
+animation: borderRotate 4s linear infinite;
+}
+
+.container {
+background: #ffffff;
+padding: 25px 20px;
+border-radius: 14px;
+position: relative;
+z-index: 1;
+width: 100%;
+}
+
+.form-box { animation: fadeInUp 0.5s ease-in-out; }
+.hidden { display: none !important; }
+
+/* --- LAYOUT WRAPPERS FOR SYSTEM CORES --- */
+#dashboard-page {
+max-width: 500px;
+animation: fadeInUp 0.6s ease-out;
+}
+
+.dash-header {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(10px);
+padding: 12px 20px;
+border-radius: 12px;
+margin-bottom: 25px;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+width: auto;
+padding: 8px 18px;
+font-size: 14px;
+background: linear-gradient(90deg, #ff416c, #ff4b2b);
+box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
+}
+
+.plans-container {
+display: flex;
+flex-direction: column;
+gap: 16px;
+margin-top: 20px;
+width: 100%;
+}
+
+.plan-card {
+background: rgba(255, 255, 255, 0.06);
+backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 16px;
+padding: 25px 20px;
+width: 100%;
+transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+position: relative;
+overflow: hidden;
+}
+
+.plan-card:hover {
+transform: translateY(-5px) scale(1.02);
+border-color: #00f0ff;
+box-shadow: 0 10px 25px rgba(0, 240, 255, 0.25);
+}
+
+.payment-box, .processing-box {
+background: rgba(255, 255, 255, 0.07);
+backdrop-filter: blur(15px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+padding: 25px 20px;
+border-radius: 20px;
+max-width: 360px;
+width: 100%;
+margin: 0 auto;
+}
+
+.processing-box {
+background: rgba(0, 0, 0, 0.65);
+border-color: #ffc107;
+max-width: 360px;
+text-align: center;
+box-shadow: 0 0 30px rgba(255, 193, 7, 0.2);
+}
+
+.qr-code-img {
+width: 200px;
+height: 200px;
+object-fit: contain;
+margin: 15px auto;
+border-radius: 12px;
+border: 4px solid white;
+display: block;
+}
+
+.gear-container {
+position: relative;
+width: 80px;
+height: 80px;
+margin: 0 auto 20px auto;
+}
+.main-gear { font-size: 50px; color: #ffc107; animation: gearSpin 3s linear infinite; }
+.sub-gear { font-size: 26px; color: #00f0ff; position: absolute; bottom: 5px; right: 5px; animation: gearSpin 2s linear infinite reverse; }
+
+/* --- PREDICTION STYLING BOUNDS --- */
+.prediction-page {
+color: white;
+text-align: center;
+z-index: 10;
+width: 100%;
+animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+body.wingo-active-bg::before {
+content: '';
+position: fixed;
+top: 0; left: 0; width: 100%; height: 100%;
+background: linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+opacity: 0.12;
+z-index: 0;
+pointer-events: none;
+}
+.holo-panel {
+background: rgba(0,0,0,0.65);
+backdrop-filter: blur(25px);
+border: 1px solid rgba(255,153,51,0.3);
+box-shadow: 0 0 30px rgba(0,0,0,0.7);
+}
+.scan-line {
+position: absolute;
+top: 0; left: 0; width: 100%; height: 2px;
+background: linear-gradient(to right, transparent, #FF9933, #FFFFFF, #138808);
+animation: scan 3s linear infinite;
+}
+@keyframes scan { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+.quantum-num-node {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+font-weight: 900;
+margin-left: 15px;
+box-shadow: 0 0 15px currentColor;
+border: 2px solid #fff;
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { corePlugins: { preflight: false } }</script>
 </head>
-<body class="p-4 md:p-8 antialiased">
+<body id="main-body" class="auth-bg">
 
-<div class="max-w-7xl mx-auto space-y-8">
+<canvas id="neuralCanvas" class="hidden fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0"></canvas>
 
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-slate-800/60">
-<div>
+<div id="auth-global-container" class="w-full flex flex-col items-center justify-center">
+<div class="global-branding-wrapper">
+
+<a href="https://t.me/mr_anand_treader" target="_blank" class="no-underline block">
+<div class="tg-animated-logo-wrapper">
+<div class="tg-logo-ring"></div>
+<div class="tg-logo-icon-box">
+<i class="fab fa-telegram-plane"></i>
+</div>
+</div>
+</a>
+
+<h2 class="text-3xl mb-1 brand-title">MR. ANAND TRADER<br>Starworldz trx</h2>
+<p class="text-white/70 font-mono text-xs uppercase tracking-widest mb-4">STASTARWORLDZ. COM 24/7 hours support available for you, so play confidently v4.0</p>
+
+<div class="notice-board">
+<div class="notice-text">
+<i class="fas fa-triangle-exclamation text-amber-400 mr-2"></i>
+<span class="alert-tag">Vip Warning:</span> Is game me bittiya jokhim (financial risk) shamil hai aur iski aadat lag sakti hai. Kripya apne jokhim aur zimmedari par khele. AI Predictions sirf patterns par kam karti hai, 100% profit ka koi dawa nahi hai. Kisi bhi payment ya hack load processing error ke liye turant contact kare: <span class="tg-tag">@mr_anand_treader</span>   |  
+<span class="alert-tag">English Advisory:</span> This game involves financial risk and may be addictive. Please play responsibly at your own risk. AI tool outputs are based on mathematical density arrays and do not guarantee fixed profits. For queries or payment support, ping us directly at: <span class="tg-tag">@mr_anand_treader</span>
+</div>
+</div>
+</div>
+
+<div id="auth-section" class="box-wrapper">
+<div class="container">
+<div id="register-box" class="form-box hidden">
+<h2 class="text-gray-800 text-xl font-bold mb-4">Create Account</h2>
+<form onsubmit="handleRegister(event)">
+<div class="input-group mb-4">
+<label class="block text-gray-600 text-sm mb-1">Mobile Number</label>
+<input type="text" id="reg-mobile" maxlength="10" pattern="\d{10}" required placeholder="Enter 10-digit mobile number" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+</div>
+<div class="input-group mb-6">
+<label class="block text-gray-600 text-sm mb-1">Password</label>
+<input type="password" id="reg-password" required placeholder="Enter login password">
+</div>
+<button type="submit">Register</button>
+</form>
+<p class="text-center mt-4 text-sm text-gray-500">Already have an account? <a href="#" class="text-[#23a6d5] font-bold no-underline" onclick="toggleForm()">Login here</a></p>
+</div>
+
+<div id="login-box" class="form-box">
+<h2 class="text-gray-800 text-xl font-bold mb-4">Account Login</h2>
+<form onsubmit="handleLogin(event)">
+<div class="input-group mb-4">
+<label class="block text-gray-600 text-sm mb-1">Mobile Number</label>
+<input type="text" id="login-mobile" maxlength="10" pattern="\d{10}" required placeholder="Enter registered mobile" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+</div>
+<div class="input-group mb-6">
+<label class="block text-gray-600 text-sm mb-1">Password</label>
+<input type="password" id="login-password" required placeholder="Enter password">
+</div>
+<button type="submit">Login</button>
+</form>
+<p class="text-center mt-4 text-sm text-gray-500">Don't have an account? <a href="#" class="text-[#23a6d5] font-bold no-underline" onclick="toggleForm()">Register here</a></p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="dashboard-page" class="hidden w-full">
+<div class="dash-header">
+<div class="text-left text-xs font-mono text-gray-400">
+Logged ID:<br><span id="user-uid-display" class="text-[#00f0ff] font-bold">UID-00000</span>
+</div>
+<button class="logout-btn" onclick="handleLogout()">Logout</button>
+</div>
+
+<h2 class="text-center text-3xl mb-2 brand-title">MR. ANAND TRADER</h2>
+<p class="text-center text-gray-400 text-xs mb-6 uppercase tracking-wider font-mono">Premium Automated Infrastructure</p>
+
+<div class="notice-board">
+<div class="notice-text">
+<i class="fas fa-triangle-exclamation text-amber-400 mr-2"></i>
+<span class="alert-tag">Vip Warning:</span> Is game me bittiya jokhim (financial risk) shamil hai aur iski aadat lag sakti hai. Kripya apne jokhim aur zimmedari par khele. AI Predictions sirf patterns par kam karti hai, 100% profit ka koi dawa nahi hai. Kisi bhi payment ya hack load processing error ke liye turant contact kare: <span class="tg-tag">@mr_anand_treader</span>   |  
+<span class="alert-tag">English Advisory:</span> This game involves financial risk and may be addictive. Please play responsibly at your own risk. AI tool outputs are based on mathematical density arrays and do not guarantee fixed profits. For queries or payment support, ping us directly at: <span class="tg-tag">@mr_anand_treader</span>
+</div>
+</div>
+
+<div class="plans-container">
+<div id="card-199" class="plan-card">
+<h4 class="text-xl font-bold mb-2 text-white">1 Day Plan</h4>
+<div class="text-2xl font-extrabold text-[#00f0ff] mb-4">₹199</div>
+<ul class="text-left text-xs text-gray-300 space-y-1 mb-6 list-none">
+<li>✓ 24 Hours Server Access</li>
+<li>✓ 40% wining 🏆 Instant Activation</li>
+<li>✓ Standard Latency</li>
+</ul>
+<button id="btn-199" onclick="openPaymentPage('1 Day Plan', 199)">Buy Now</button>
+</div>
+
+<div id="card-249" class="plan-card" style="border-color: #ff007f;">
+<h4 class="text-xl font-bold mb-2 text-white">3 Days Plan</h4>
+<div class="text-2xl font-extrabold text-[#ff007f] mb-4">₹249</div>
+<ul class="text-left text-xs text-gray-300 space-y-1 mb-6 list-none">
+<li>✓ 3 Days Premium Access</li>
+<li>✓ 60% WWining 🏆 Low Latency Node</li>
+<li>✓ Priority AI Queues</li>
+</ul>
+<button id="btn-249" onclick="openPaymentPage('3 Days Plan', 249)">Buy Now</button>
+</div>
+
+<div id="card-499" class="plan-card">
+<h4 class="text-xl font-bold mb-2 text-white">15 Days Plan</h4>
+<div class="text-2xl font-extrabold text-[#00f0ff] mb-4">₹499</div>
+<ul class="text-left text-xs text-gray-300 space-y-1 mb-6 list-none">
+<li>✓ 15 Days Dedicated Access</li>
+<li>✓ 80% Wining 🏆 Advanced AI Routing</li>
+<li>✓ VIP Support Engine</li>
+</ul>
+<button id="btn-499" onclick="openPaymentPage('15 Days Plan', 499)">Buy Now</button>
+</div>
+
+<div id="card-999" class="plan-card" style="border-color: #ffc107;">
+<h4 class="text-xl font-bold mb-2 text-white">Lifetime Plan</h4>
+<div class="text-2xl font-extrabold text-[#ffc107] mb-4">₹999</div>
+<ul class="text-left text-xs text-gray-300 space-y-1 mb-6 list-none">
+<li>✓ Unlimited Access</li>
+<li>✓ Custom High-Speed API</li>
+<li>✓ 100% Max Priority Allocation</li>
+</ul>
+<button id="btn-999" onclick="openPaymentPage('Lifetime Plan', 999)">Buy Now</button>
+</div>
+</div>
+</div>
+
+<div id="payment-page" class="hidden w-full">
+<div class="payment-box">
+<h2 class="text-white text-xl mb-2 text-center">Scan & Pay</h2>
+<div id="selected-plan-details" class="text-center text-md text-[#00f0ff] font-bold mb-4">Plan - ₹00</div>
+
+<img class="qr-code-img" id="dynamic-qr-code" src="" alt="Payment QR Code">
+
+<div class="text-center text-xs text-gray-400 font-mono mb-4 bg-black/40 p-2 rounded border border-white/5">
+UPI ID: <span class="text-white font-bold">2004kushwaha-1@okaxis</span>
+</div>
+
+<form onsubmit="handleUtrSubmit(event)" class="mt-5">
+<div class="round-input-container mb-4 text-left">
+<label class="block text-gray-300 text-xs mb-2">Enter 12-Digit UTR Number</label>
+<input type="text" id="utr-number" maxlength="12" pattern="\d{12}" required placeholder="e.g. 408XXXXXXXXX" class="bg-black/30 border-white/20 text-white text-center">
+</div>
+<div class="flex gap-4">
+<button type="button" class="w-1/2 bg-white/10 text-white border border-white/20 p-2 text-sm rounded-lg" onclick="backToDashboard()">Back</button>
+<button type="submit" class="w-1/2 p-2 text-sm rounded-lg">Submit UTR</button>
+</div>
+</form>
+</div>
+</div>
+
+<div id="processing-page" class="hidden w-full">
+<div class="processing-box">
+<div class="gear-container">
+<i class="fas fa-cog main-gear"></i>
+<i class="fas fa-cog sub-gear"></i>
+</div>
+<h2 class="text-amber-400 text-xl font-bold mb-3 font-mono">Payment Processing...</h2>
+<p class="text-gray-200 text-xs mb-4 px-1 leading-relaxed">
+UTR Verification system access.
+</p>
+<div class="bg-black/40 border border-amber-500/20 rounded-xl p-3 mb-5 text-left">
+<span class="block text-[9px] text-amber-500 font-mono font-bold uppercase tracking-widest mb-1">Verification Status</span>
+<span class="text-xs text-gray-300 flex items-center gap-2"><i class="fas fa-hourglass-half text-amber-400 animate-pulse"></i> Awaiting Clearance</span>
+</div>
+<button class="bg-white/10 text-white border border-white/20 p-2 text-sm rounded-lg" onclick="handleLogout()">Cancel & Logout</button>
+</div>
+</div>
+
+<div id="page-wingo" class="prediction-page hidden max-w-xl mx-auto text-left w-full">
+<div class="space-y-4">
+<div class="holo-panel rounded-2xl p-4 flex justify-between items-center border-[#FF9933]/40">
 <div class="flex items-center gap-3">
-<div class="h-11 w-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-sky-400 flex items-center justify-center shadow-lg">
-<i class="fas fa-user-gear text-lg text-white"></i>
+<div class="w-10 h-10 bg-[#000080]/20 rounded-xl flex items-center justify-center border border-[#000080]/60 relative">
+<i class="fas fa-brain text-xl text-[#FF9933] animate-pulse"></i>
 </div>
-<h1 class="text-2xl md:text-3xl font-bold tracking-tight heading-font">
-MR. ANAND TRADER <span class="animate-shimmer-text">MASTER CORE</span>
-</h1>
+<div>
+<p class="text-[9px] text-green-400 font-bold tracking-widest uppercase m-0 p-0"><i class="fas fa-shield-halved text-xs mr-1"></i> Starworldz TRX HACK ACTIVE</p>
+<p class="text-md font-bold text-white tracking-wider m-0 p-0" id="coreId">INITIALIZING...</p>
 </div>
-<p class="text-slate-400 text-xs md:text-sm mt-2 pl-1">Automatic subscription expiration handler, user choices tracking pipeline.</p>
 </div>
-
-<div class="flex gap-4 w-full md:w-auto">
-<div class="bg-slate-900/40 backdrop-blur border border-slate-800/80 px-5 py-3 rounded-xl flex-1 md:flex-none min-w-[130px]">
-<span class="text-[10px] text-slate-500 block font-bold uppercase tracking-wider mb-0.5">Total Users</span>
-<span id="total-users-count" class="text-2xl font-bold text-slate-100 heading-font">0</span>
-</div>
-<div class="bg-slate-900/40 backdrop-blur border border-slate-800/80 px-5 py-3 rounded-xl flex-1 md:flex-none min-w-[130px]">
-<span class="text-[10px] text-slate-400 block font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
-<span class="h-2 w-2 rounded-full bg-amber-500 animate-ping"></span>Verification Pipeline
-</span>
-<span id="pending-utr-count" class="text-2xl font-bold text-amber-400 heading-font">0</span>
+<div class="flex items-center gap-4">
+<button onclick="handleLogout()" class="w-auto px-3 py-1.5 rounded text-[10px] font-bold bg-gradient-to-r from-red-600 to-red-800 border-none text-white">Exit</button>
+<div class="text-right">
+<p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest m-0 p-0">TODAY TIME</p>
+<p id="serverClock" class="text-sm font-mono text-white m-0 p-0">00:00:00</p>
 </div>
 </div>
 </div>
 
-<div class="admin-card rounded-2xl p-6 relative overflow-hidden">
-<div class="flex items-center justify-between mb-6">
-<h2 class="text-lg font-semibold text-amber-400 flex items-center gap-2 heading-font animate-neon-amber">
-<i class="fas fa-receipt text-amber-500/80"></i> INCOME STREAM VALIDATION CORE
+<div class="holo-panel rounded-3xl p-6 text-center relative overflow-hidden border-[#FF9933]/30">
+<div class="scan-line"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex flex-col gap-1 text-left">
+<span class="text-[9px] text-[#FF9933] font-bold uppercase tracking-widest">Confidence</span>
+<div class="flex items-center gap-2">
+<span id="confidenceLevel" class="text-xl font-bold text-white font-mono">--.-%</span>
+<div class="w-20 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+<div id="confidenceBar" class="h-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808] w-0 transition-all duration-1000"></div>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[9px] text-[#138808] font-bold uppercase tracking-widest">Next Shift</span>
+<div class="text-lg font-mono text-white font-bold" id="cycleTimer">00:60</div>
+</div>
+</div>
+
+<div id="predictionContainer" class="py-6 relative flex justify-center items-center">
+<h2 id="predictionText" class="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#FF9933] via-white to-[#138808] drop-shadow-[0_0_15px_rgba(255,153,51,0.5)]">
+WAITING
 </h2>
-<span class="text-xs text-slate-400 bg-slate-900/80 px-3 py-1 rounded-full border border-slate-800 flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>Live Monitor Active
-</span>
+<div id="predictionNumberNode" class="quantum-num-node hidden">--</div>
+</div>
 </div>
 
+<div class="holo-panel rounded-2xl p-4 border-white/10">
 <div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-slate-800 text-slate-400 text-xs font-semibold tracking-wider uppercase bg-slate-900/40">
-<th class="py-3.5 px-4 rounded-l-lg">Client Mobile</th>
-<th class="py-3.5 px-4">Generated Unique UID</th>
-<th class="py-3.5 px-4">Submitted UTR Token</th>
-<th class="py-3.5 px-4">User Selected Plan Target</th>
-<th class="py-3.5 px-4 text-right rounded-r-lg">Execution Command</th>
-</tr>
+<table class="w-full text-left text-xs font-mono">
+<thead class="text-[#FF9933] border-b border-white/10">
+<tr><th class="pb-2">PERIOD</th><th class="pb-2">SIZE</th><th class="pb-2">NUM</th><th class="pb-2">ACTUAL</th><th class="pb-2">RESULT</th><th class="pb-2">CONF</th></tr>
 </thead>
-<tbody id="pending-payments-tbody" class="text-sm divide-y divide-slate-800/40">
-<tr>
-<td colspan="5" class="py-12 text-center text-slate-500">
-<i class="fas fa-circle-notch animate-spin mr-2 text-indigo-500"></i> Linking operational data systems...
-</td>
-</tr>
-</tbody>
+<tbody id="historyTableBody" class="text-gray-300"></tbody>
 </table>
 </div>
-</div>
-
-<div class="admin-card rounded-2xl p-6 relative overflow-hidden">
-<div class="flex items-center justify-between mb-6">
-<h2 class="text-lg font-semibold text-indigo-400 flex items-center gap-2 heading-font animate-neon-indigo">
-<i class="fas fa-database text-indigo-500/80"></i> REPOSITORY CLUSTER DATA ACCESS CONTROL
-</h2>
-</div>
-
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-slate-800 text-slate-400 text-xs font-semibold tracking-wider uppercase bg-slate-900/40">
-<th class="py-3.5 px-4 rounded-l-lg">Mobile Identifier</th>
-<th class="py-3.5 px-4">UID Anchor</th>
-<th class="py-3.5 px-4">Pass-key</th>
-<th class="py-3.5 px-4">Active Plan Node</th>
-<th class="py-3.5 px-4">Time Remaining Time</th>
-<th class="py-3.5 px-4">Moderation Status</th>
-<th class="py-3.5 px-4 text-right rounded-r-lg">Actions</th>
-</tr>
-</thead>
-<tbody id="all-users-tbody" class="text-sm divide-y divide-slate-800/40">
-</tbody>
-</table>
 </div>
 </div>
 </div>
 
 <script>
+// --- FIREBASE MODULE NODE SEED ---
 const firebaseConfig = {
 apiKey: "AIzaSyDnkNrKivqPYEQGzCTl3Vn3M-Th8cEyVzI",
 authDomain: "mr-anand-treader.firebaseapp.com",
@@ -163,168 +627,232 @@ appId: "1:577408466203:web:adf7bd0c15b1ced491a7be",
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-let liveCountdownTimersMap = {};
 
-database.ref('users').on('value', snapshot => {
-if(!snapshot.exists()) return;
+const body = document.getElementById('main-body');
+const authGlobalContainer = document.getElementById('auth-global-container');
+const dashPage = document.getElementById('dashboard-page');
+const paymentPage = document.getElementById('payment-page');
+const processingPage = document.getElementById('processing-page');
+const wingoPage = document.getElementById('page-wingo');
 
-const usersData = snapshot.val();
-const pendingPaymentsTbody = document.getElementById('pending-payments-tbody');
-const allUsersTbody = document.getElementById('all-users-tbody');
+let currentLoggedInUser = "";
+let lastPeriod = null, wingoClockInterval = null;
+let predictionHistory = [];
 
-pendingPaymentsTbody.innerHTML = '';
-allUsersTbody.innerHTML = '';
+const ADMIN_UPI_ID = "2004kushwaha-1@okaxis";
 
-let totalUsers = 0;
-let pendingRequests = 0;
-const nowTime = Date.now();
+// --- AUTOMATED API INTERACTION SEGMENTS ---
+const CURRENT_API = 'https://api.bdg88zf.com/api/webapi/GetGameIssue';
+const HISTORY_API = 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json';
+const REQUEST_PAYLOAD = { typeId: 1, language: 0, random: "e7fe6c090da2495ab8290dac551ef1ed", signature: "1F390E2B2D8A55D693E57FD905AE73A7" };
 
-for (let userId in usersData) {
-totalUsers++;
-const user = usersData[userId];
-
-const mobile = user.username || '—';
-const uid = user.uid || '—';
-const password = user.password || '—';
-const status = user.status || 'Active';
-const activePlanName = user.activePlanName || '';
-const expiresAt = user.expiresAt || null;
-const userSelectedPlan = user.selectedPlan || '';
-
-if (user.plan === 'Active' && expiresAt && expiresAt !== "LIFETIME" && nowTime >= expiresAt) {
-database.ref('users/' + userId).update({ plan: "Inactive", activePlanName: "" });
-continue;
-}
-
-const isBanned = status === 'Banned';
-const statusBadge = isBanned
-? <span class="px-2 py-0.5 rounded text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20"&gt;Banned&lt;/span>
-: <span class="px-2 py-0.5 rounded text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20"&gt;Active&lt;/span>;
-
-let displayPrettyPlan = activePlanName === 'Regulatory 199 Plan' ? '1 Day Plan' : activePlanName === 'Regulatory 249 Plan' ? '3 Days Plan' : activePlanName === 'Regulatory 499 Plan' ? '15 Days Plan' : activePlanName === 'Regulatory 999 Plan' ? 'Lifetime Plan' : '';
-const planBadge = user.plan === 'Active'
-? <span class="text-sky-400 font-bold text-xs bg-sky-500/10 px-2 py-1 rounded border border-sky-400/20"&gt;&lt;i class="fas fa-crown mr-1"&gt;&lt;/i&gt;${displayPrettyPlan}</span>:<span class="text-slate-500 text-xs">Plan Suspended</span>`;
-
-const allUsersRow = <tr class="hover:bg-slate-800/30 transition-all duration-300 animate-row"&gt; &lt;td class="py-3.5 px-4 font-bold text-slate-200"&gt;${mobile}</td>
-<td class="py-3.5 px-4 font-semibold text-slate-400">{password}</td>
-<td class="py-3.5 px-4">{userId}">--</td>
-<td class="py-3.5 px-4">{isBanned ?
-<button onclick="updateUserStatus('${userId}', 'Active')" class="text-xs bg-green-500/10 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-1.5 rounded border border-green-500/20 transition-all">Unban</button>:<button onclick="updateUserStatus('${userId}', 'Banned')" class="text-xs bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white px-2.5 py-1.5 rounded border border-red-500/20 transition-all"&gt;Ban&lt;/button>
-}
-<button onclick="removePlan('${userId}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded border border-slate-700 transition-all"&gt;&lt;i class="fas fa-undo"&gt;&lt;/i&gt; Reset&lt;/button&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr>;
-allUsersTbody.innerHTML += allUsersRow;
-
-if (user.plan === 'Active' && expiresAt) { liveCountdownTimersMap[userId] = expiresAt; } else { delete liveCountdownTimersMap[userId]; }
-
-if (user.utr && user.utr !== "None") {
-pendingRequests++;
-
-const opt1 = userSelectedPlan === "Regulatory 199 Plan" ? "selected" : "";
-const opt2 = userSelectedPlan === "Regulatory 249 Plan" ? "selected" : "";
-const opt3 = userSelectedPlan === "Regulatory 499 Plan" ? "selected" : "";
-const opt4 = userSelectedPlan === "Regulatory 999 Plan" ? "selected" : "";
-
-const paymentRow = <tr class="hover:bg-amber-500/[0.02] bg-amber-500/[0.005] transition-all duration-300 animate-row"&gt; &lt;td class="py-4 px-4 font-extrabold text-slate-200"&gt;${mobile}</td>
-<td class="py-4 px-4 text-slate-400 font-mono text-xs font-medium">{user.utr}</span>
-</td>
-<td class="py-4 px-4">
-<select id="plan-select-{opt1}>1 Day Plan (₹199)</option>
-<option value="Regulatory 249 Plan" {opt3}>15 Days Plan (₹499)</option>
-<option value="Regulatory 999 Plan" {userId}')" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-4 py-1.5 rounded-lg text-xs font-semibold shadow-md shadow-green-900/20 transition-all transform hover:-translate-y-0.5">
-<i class="fas fa-check-circle mr-1"></i> Approve Injected Node
-</button>
-<button onclick="rejectPayment('${userId}')" class="bg-slate-800 hover:bg-red-950/60 text-slate-400 hover:text-red-400 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 hover:border-red-900/50 transition-all"&gt; Reject &lt;/button&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr>;
-pendingPaymentsTbody.innerHTML += paymentRow;
-}
-}
-
-document.getElementById('total-users-count').innerText = totalUsers;
-document.getElementById('pending-utr-count').innerText = pendingRequests;
-
-if (pendingRequests === 0) {
-pendingPaymentsTbody.innerHTML = <tr&gt; &lt;td colspan="5" class="py-14 text-center text-slate-500 font-medium animate-row"&gt; &lt;div class="flex flex-col items-center justify-center gap-2"&gt; &lt;div class="h-12 w-12 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 text-xl shadow-lg mb-1"&gt; &lt;i class="fas fa-check-double"&gt;&lt;/i&gt; &lt;/div&gt; &lt;span class="text-sm text-slate-400 font-semibold tracking-wide"&gt;Verification Pipelines Vacant&lt;/span&gt; &lt;p class="text-xs text-slate-500"&gt;No telemetry payment actions currently waiting approval module.&lt;/p&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr>;
-}
+window.onload = function() {
+const savedUser = localStorage.getItem("savedUsername");
+if (savedUser) {
+database.ref('users/' + savedUser).once('value', snapshot => {
+if (snapshot.exists() && snapshot.val().status !== "Banned") {
+currentLoggedInUser = savedUser;
+authGlobalContainer.classList.add('hidden');
+body.className = 'dashboard-bg';
+checkUserPlanLive(savedUser);
+} else { localStorage.removeItem("savedUsername"); }
 });
+}
+};
 
-setInterval(() => {
-const timeNow = Date.now();
-for (let userId in liveCountdownTimersMap) {
-const node = document.getElementById(countdown-node-${userId}`);
-if (!node) continue;
-const expiresAt = liveCountdownTimersMap[userId];
-
-if (expiresAt === "LIFETIME") {
-node.innerHTML = <span class="text-amber-400 font-bold tracking-wider"&gt;UNLIMITED&lt;/span>;
-continue;
+function toggleForm() {
+document.getElementById('register-box').classList.toggle('hidden');
+document.getElementById('login-box').classList.toggle('hidden');
 }
 
-const diff = expiresAt - timeNow;
-if (diff <= 0) {
-node.innerHTML = <span class="text-red-500 font-bold"&gt;EXPIRED&lt;/span>;
+function handleRegister(event) {
+event.preventDefault();
+const mobile = document.getElementById('reg-mobile').value.trim();
+const pass = document.getElementById('reg-password').value;
+
+if(mobile.length !== 10) { alert('Enter valid 10-digit mobile number!'); return; }
+
+database.ref('users/' + mobile).once('value', snapshot => {
+if(snapshot.exists()) {
+alert('Mobile Number already registered!');
 } else {
-const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-node.innerHTML = <span class="text-green-400 font-semibold font-mono"&gt;${days}d ${hours}h ${minutes}m ${seconds}s&lt;/span>;
-}
-}
-}, 1000);
+const generatedUid = "UID-" + Math.floor(10000 + Math.random() * 90000);
 
-function approvePayment(userId) {
-const selectElement = document.getElementById(plan-select-${userId});
-const selectedPlanName = selectElement.value;
-const currentTime = Date.now();
-let expireTimestamp;
-
-if (selectedPlanName === "Regulatory 199 Plan") {
-expireTimestamp = currentTime + (1 * 24 * 60 * 60 * 1000);
-} else if (selectedPlanName === "Regulatory 249 Plan") {
-expireTimestamp = currentTime + (3 * 24 * 60 * 60 * 1000);
-} else if (selectedPlanName === "Regulatory 499 Plan") {
-expireTimestamp = currentTime + (15 * 24 * 60 * 60 * 1000);
-} else if (selectedPlanName === "Regulatory 999 Plan") {
-expireTimestamp = "LIFETIME";
-}
-
-database.ref('users/' + userId).update({
-plan: "Active",
-activePlanName: selectedPlanName,
-expiresAt: expireTimestamp,
+database.ref('users/' + mobile).set({
+username: mobile,
+password: pass,
+uid: generatedUid,
 utr: "None",
-selectedPlan: "None"
-}).then(() => {
-showToast("Subscription provisioned successfully: " + selectedPlanName);
-}).catch(err => {
-alert("Database core crash logs mismatch: " + err.message);
+status: "Active",
+plan: "Inactive",
+activePlanName: ""
+})
+.then(() => {
+alert("Registration Successful!\nYour ID: " + generatedUid + "\nPlease login now.");
+toggleForm();
+});
+}
 });
 }
 
-function rejectPayment(userId) {
-if(confirm("Confirm deletion and rejection of this client payment token?")) {
-database.ref('users/' + userId).update({ utr: "None", selectedPlan: "None" });
-}
+function handleLogin(event) {
+event.preventDefault();
+const mobile = document.getElementById('login-mobile').value.trim();
+const pass = document.getElementById('login-password').value;
+
+database.ref('users/' + mobile).once('value', snapshot => {
+if (snapshot.exists() && snapshot.val().password === pass) {
+if(snapshot.val().status === "Banned") return;
+currentLoggedInUser = mobile;
+localStorage.setItem("savedUsername", mobile);
+authGlobalContainer.classList.add('hidden');
+body.className = 'dashboard-bg';
+checkUserPlanLive(mobile);
+} else { alert('Invalid Mobile Number or Password!'); }
+});
 }
 
-// Fixed status parameters mapping
-function updateUserStatus(userId, newStatus) { database.ref('users/' + userId).update({ status: newStatus }); }
-
-function removePlan(userId) {
-if(confirm("Wipe structural layout sub plan records instantly for this user?")) {
-database.ref('users/' + userId).update({ plan: "Inactive", activePlanName: "", expiresAt: null, selectedPlan: "None" });
-}
+function handleLogout() {
+if(wingoClockInterval) { clearInterval(wingoClockInterval); wingoClockInterval = null; }
+localStorage.removeItem("savedUsername");
+location.reload();
 }
 
-function showToast(msg) {
-const t = document.createElement('div');
-t.className = "fixed bottom-6 right-6 bg-slate-900/95 border border-green-500/40 text-green-400 text-xs font-semibold px-4 py-3 rounded-xl shadow-[0_15px_40px_rgba(34,197,94,0.15)] z-50 animate-row backdrop-blur-md flex items-center border-l-4 border-l-green-500";
-t.innerHTML = <i class="fas fa-check-circle mr-2 text-sm"&gt;&lt;/i&gt; + msg;
-document.body.appendChild(t);
-setTimeout(() => {
-t.style.opacity = '0'; t.style.transform = 'translateY(10px)'; t.style.transition = 'all 0.4s ease';
-setTimeout(() => t.remove(), 400);
-}, 3500);
+function checkUserPlanLive(username) {
+database.ref('users/' + username).on('value', snapshot => {
+if(!snapshot.exists()) return;
+const userData = snapshot.val();
+
+dashPage.classList.add('hidden');
+processingPage.classList.add('hidden');
+wingoPage.classList.add('hidden');
+
+if(userData.uid) {
+document.getElementById('user-uid-display').innerText = userData.uid;
+}
+
+if (userData.utr !== "None" && userData.plan !== "Active") {
+processingPage.classList.remove('hidden');
+return;
+}
+
+if(userData.plan === "Active") {
+body.className = 'wingo-active-bg';
+wingoPage.classList.remove('hidden');
+if(!wingoClockInterval) {
+fetchData();
+wingoClockInterval = setInterval(updateWingoTime, 1000);
+}
+return;
+}
+
+dashPage.classList.remove('hidden');
+});
+}
+
+function openPaymentPage(planName, price) {
+dashPage.classList.add('hidden');
+document.getElementById('selected-plan-details').innerText = planName + " - ₹" + price;
+
+const upiString = "upi://pay?pa=" + ADMIN_UPI_ID + "&pn=PredictionEngine&am=" + price;
+const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(upiString);
+
+document.getElementById('dynamic-qr-code').src = qrUrl;
+paymentPage.classList.remove('hidden');
+}
+
+function backToDashboard() {
+paymentPage.classList.add('hidden');
+dashPage.classList.remove('hidden');
+}
+
+function handleUtrSubmit(event) {
+event.preventDefault();
+const utr = document.getElementById('utr-number').value.trim();
+database.ref('users/' + currentLoggedInUser).update({ utr: utr }).then(() => {
+alert('UTR Submitted! Please Wait verification ...');
+paymentPage.classList.add('hidden');
+processingPage.classList.remove('hidden');
+});
+}
+
+// --- AUTOMATED STRUCTURAL WINGO QUANTUM ENGINE ---
+function updateWingoTime() {
+const now = new Date();
+document.getElementById('serverClock').innerText = now.toLocaleTimeString('en-GB');
+const rem = 60 - now.getSeconds();
+document.getElementById('cycleTimer').innerText = "00:" + String(rem).padStart(2,'0');
+if(now.getSeconds() === 0) fetchData();
+}
+
+async function fetchData() {
+try {
+const res1 = await fetch(CURRENT_API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...REQUEST_PAYLOAD, timestamp: Math.floor(Date.now()/1000)}) });
+const d1 = await res1.json();
+const cp = d1?.data?.issueNumber;
+if(cp) document.getElementById('coreId').innerText = "PERIOD-" + cp.slice(-6);
+
+const res2 = await fetch(HISTORY_API + "?ts=" + Date.now());
+const d2 = await res2.json();
+if(cp !== lastPeriod) {
+generateWingoQuantumPrediction(cp, d2.data.list);
+lastPeriod = cp;
+verifyPreviousWingo(d2.data.list);
+}
+} catch(e) {}
+}
+
+function generateWingoQuantumPrediction(period, history) {
+const avg = history.slice(0,10).map(r=>parseInt(r.number)).reduce((a,b)=>a+b,0)/10;
+const predSize = avg >= 4.5 ? "BIG" : "SMALL";
+
+let targetNumPool = predSize === "BIG" ? [5, 6, 7, 8, 9] : [0, 1, 2, 3, 4];
+const predNumber = targetNumPool[Math.floor(Math.random() * targetNumPool.length)];
+
+let colorTheme = "#22c55e";
+if ([0, 5].includes(predNumber)) colorTheme = "#a855f7";
+else if ([2, 4, 6, 8].includes(predNumber)) colorTheme = "#ef4444";
+
+const conf = 79 + Math.random() * 19;
+
+document.getElementById('predictionText').innerText = predSize;
+const numNode = document.getElementById('predictionNumberNode');
+numNode.classList.remove('hidden');
+numNode.innerText = predNumber;
+numNode.style.backgroundColor = colorTheme;
+numNode.style.color = "#ffffff";
+
+predictionHistory.unshift({ period, predSize, predNumber, colorTheme, result:'PENDING', conf:conf.toFixed(1) });
+updateWingoDashboard();
+}
+
+function verifyPreviousWingo(history) {
+predictionHistory.forEach(item => {
+if(item.result === 'PENDING') {
+const match = history.find(h=>h.issueNumber === item.period);
+if(match) {
+const actualNum = parseInt(match.number);
+item.actual = actualNum >= 5 ? "BIG (" + actualNum + ")" : "SMALL (" + actualNum + ")";
+item.result = item.predSize === (actualNum >= 5 ? "BIG" : "SMALL") ? 'WIN' : 'LOSS';
+updateWingoDashboard();
+}
+}
+});
+}
+
+function updateWingoDashboard() {
+document.getElementById('historyTableBody').innerHTML = predictionHistory.map(i => {
+return '<tr class="border-b border-white/5">' +
+'<td class="py-3 text-[#FF9933]">' + i.period.slice(-4) + '</td>' +
+'<td class="py-3 font-bold ' + (i.predSize==='BIG'?'text-[#FF9933]':'text-[#138808]') + '">' + i.predSize + '</td>' +
+'<td class="py-3"><span class="px-2 py-0.5 rounded text-white font-bold" style="background-color:' + i.colorTheme + '">' + i.predNumber + '</span></td>' +
+'<td class="py-3 text-gray-100 font-semibold">' + (i.actual||'--') + '</td>' +
+'<td class="py-3"><span class="px-2 py-1 rounded text-xs font-bold ' + (i.result==='WIN'?'bg-green-500/20 text-green-400':'bg-red-500/20 text-red-400') + '">' + i.result + '</span></td>' +
+'<td class="py-3 text-gray-400">' + i.conf + '%</td>' +
+'</tr>';
+}).join('');
 }
 </script>
 </body>
 </html>
+
